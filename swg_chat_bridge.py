@@ -816,28 +816,28 @@ class ChatBridge(discord.Client):
                     full_text = f"**{player} "
                     ly_mood_name = self.get_mood(mood_name)
                     full_text += f"says{ly_mood_name},** \"{text}\""
-                if language_id != 1:
+                if language_id != "1":
                     self.log.info("Language ID check != 1 reached.")
                     match language_id:
-                        case 2: 
+                        case "2": 
                             full_text += " **in Rodese.**"
-                        case 3: 
+                        case "3": 
                             full_text += " **in Doshan.**"
-                        case 4: 
+                        case "4": 
                             full_text += " **in Mon Calamari.**"
-                        case 5: 
+                        case "5": 
                             full_text += " **in Shyriiwook.**"
-                        case 6: 
+                        case "6": 
                             full_text += " **in Bothese.**"
-                        case 7: 
+                        case "7": 
                             full_text += " **in Ryl.**"
-                        case 8: 
+                        case "8": 
                             full_text += " **in Zabraki.**"
-                        case 9: 
+                        case "9": 
                             full_text += " **in Lekku.**"
-                        case 10: 
+                        case "10": 
                             full_text += " **in Ithorian.**"
-                        case 11: 
+                        case "11": 
                             full_text += " **in Sullustan.**"
                         case _: 
                             full_text += ""
