@@ -799,6 +799,7 @@ class ChatBridge(discord.Client):
                 text = msg_arr[1]
                 mood_name = msg_arr[2]
                 language_id = msg_arr[3]
+                self.log.info(f"Language ID: {language_id}")
                 if ("((" and "))" in text):
                     return
                 if ("(" and ")" in text):
