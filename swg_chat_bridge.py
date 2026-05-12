@@ -794,13 +794,11 @@ class ChatBridge(discord.Client):
     def _relay_chat(self, player, message):
         """Called by SWG client when game chat is received."""
         if self.chat_channel:
-                self.log.info(f"Printing original message: {message}")
                 msg_arr = re.split('\|', message)
                 command = msg_arr[0]
                 text = msg_arr[1]
                 mood_name = msg_arr[2]
                 language_id = msg_arr[3]
-                self.log.info(f"Logging each component: {command} | {text} | {mood_name} | {language_id}")
                 if ("((" and "))" in text):
                     return
                 if ("(" and ")" in text):
@@ -818,7 +816,7 @@ class ChatBridge(discord.Client):
                         full_text += f",** \"{text}\""
                 else:
                     full_text = f"**{player} says"
-                    if mood_name != "" or mood_name != "none":
+                    if mood_name != "" or mood_name != " " or mood_name != "  ":
                         ly_mood_name = self.get_mood(mood_name)
                         full_text += f" {ly_mood_name},** \"{text}\""
                     else:
@@ -826,7 +824,7 @@ class ChatBridge(discord.Client):
                 if language_id != 1:
                     match language_id:
                         case 2: 
-                            full_text += " **in Rodian.**"
+                            full_text += " **in Rodese.**"
                         case 3: 
                             full_text += " **in Doshan.**"
                         case 4: 
@@ -849,7 +847,6 @@ class ChatBridge(discord.Client):
                             full_text += ""
                 
                 asyncio.ensure_future(self._send_to_discord(self.chat_channel, full_text))
-                self.log.info(f"Sending message to Discord with contents: {full_text}")
 
     def _relay_tell(self, player, message):
         """Called by SWG client when a tell is received."""
