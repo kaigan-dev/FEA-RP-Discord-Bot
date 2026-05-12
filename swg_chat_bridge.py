@@ -794,19 +794,17 @@ class ChatBridge(discord.Client):
     def _relay_chat(self, player, message):
         """Called by SWG client when game chat is received."""
         if self.chat_channel:
-            asyncio.ensure_future(
                 msg_arr = re.split("|", message, 1)
                 command = msg_arr[0]
                 message = msg_arr[1]
-                if command = "DM"
-                    self._send_to_discord(self.chat_channel, f"***{player}: {message}***")
-                elif command = "emote"
-                    self._send_to_discord(self.chat_channel, f"**{player} {message}**")
-                elif command != ""
-                    self._send_to_discord(self.chat_channel, f"**{player} {command}s,** {message}")
-                else
-                    self._send_to_discord(self.chat_channel, f"**{player}** says,**  {message}")
-            )
+                if command == "DM":
+                    asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"***{player}: {message}***"))
+                elif command == "emote":
+                    asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player} {message}**"))
+                elif command != "":
+                    asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player} {command}s,** {message}"))
+                else:
+                    asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player}** says,**  {message}"))
 
     def _relay_tell(self, player, message):
         """Called by SWG client when a tell is received."""
