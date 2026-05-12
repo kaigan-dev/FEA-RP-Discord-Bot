@@ -795,14 +795,16 @@ class ChatBridge(discord.Client):
             msg_arr = re.split('\|', message)
             command = msg_arr[0]
             text = msg_arr[1]
+            player_count = msg_arr[1]
             mood_name = msg_arr[2]
+            dm_count = msg_arr[2]
             language_id = msg_arr[3]
             if ("((" and "))" in text):
                 return
             if ("(" and ")" in text):
                 return
             if command == "PLAYERCOUNT":
-                asyncio.ensure_future(self.change_presence(activity = discord.Activity(type = discord.ActivityType.watching, name = f"Players: {msg_arr[1]}, DMs: {msg_arr[2]}")))
+                asyncio.ensure_future(self.change_presence(activity = discord.Activity(type = discord.ActivityType.watching, name = f"Players: {player_count}, DMs: {dm_count}")))
             if command == "DM":
                 asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player}:** ***{text}***"))
             elif command == "emote":
