@@ -817,6 +817,7 @@ class ChatBridge(discord.Client):
                     ly_mood_name = self.get_mood(mood_name)
                     full_text += f"says{ly_mood_name},** \"{text}\""
                 if language_id != 1:
+                    self.log.info("Language ID check != 1 reached.")
                     match language_id:
                         case 2: 
                             full_text += " **in Rodese.**"
