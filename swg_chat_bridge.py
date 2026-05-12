@@ -681,9 +681,7 @@ class ChatBridge(discord.Client):
         elif self.notification_user_id:
             self.notification_tag = f"<@{self.notification_user_id}> "
 
-        presence_name = self.discord_cfg.get('PresenceName', 'in-game')
-        await self.change_presence(
-            activity=discord.Activity(type=discord.ActivityType.watching, name=presence_name))
+        await self.change_presence(activity = discord.Activity(type = discord.ActivityType.watching, name = "Waiting for player count."))
 
         await self.swg.start()
         self.log.info("SWG client started")
@@ -793,53 +791,60 @@ class ChatBridge(discord.Client):
 
     def _relay_chat(self, player, message):
         """Called by SWG client when game chat is received."""
-        if self.chat_channel:
-                msg_arr = re.split('\|', message)
-                command = msg_arr[0]
-                text = msg_arr[1]
-                mood_name = msg_arr[2]
-                language_id = msg_arr[3]
-                if ("((" and "))" in text):
-                    return
-                if ("(" and ")" in text):
-                    return
-                if command == "DM":
-                    asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player}:** ***{text}***"))
-                elif command == "emote":
-                    asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player} {text}**"))
-                elif command != "":
-                    full_text = f"**{player} "
-                    ly_mood_name = self.get_mood(mood_name)
-                    full_text += f"{command}s {ly_mood_name},** \"{text}\""
-                else:
-                    full_text = f"**{player} "
-                    ly_mood_name = self.get_mood(mood_name)
-                    full_text += f"says{ly_mood_name},** \"{text}\""
-                if language_id != "1":
-                    match language_id:
-                        case "2": 
-                            full_text += " **in Rodese.**"
-                        case "3": 
-                            full_text += " **in Doshan.**"
-                        case "4": 
-                            full_text += " **in Mon Calamari.**"
-                        case "5": 
-                            full_text += " **in Shyriiwook.**"
-                        case "6": 
-                            full_text += " **in Bothese.**"
-                        case "7": 
-                            full_text += " **in Ryl.**"
-                        case "8": 
-                            full_text += " **in Zabraki.**"
-                        case "9": 
-                            full_text += " **in Lekku.**"
-                        case "10": 
-                            full_text += " **in Ithorian.**"
-                        case "11": 
-                            full_text += " **in Sullustan.**"
-                        case _: 
-                            full_text += ""
-                asyncio.ensure_future(self._send_to_discord(self.chat_channel, full_text))
+        if self.chat_channel == "global":
+            msg_arr = re.split('\|', message)
+            command = msg_arr[0]
+            text = msg_arr[1]
+            mood_name = msg_arr[2]
+            language_id = msg_arr[3]
+            if ("((" and "))" in text):
+                return
+            if ("(" and ")" in text):
+                return
+            if command == "DM":
+                asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player}:** ***{text}***"))
+            elif command == "emote":
+                asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player} {text}**"))
+            elif command != "":
+                full_text = f"**{player} "
+                ly_mood_name = self.get_mood(mood_name)
+                full_text += f"{command}s {ly_mood_name},** \"{text}\""
+            else:
+                full_text = f"**{player} "
+                ly_mood_name = self.get_mood(mood_name)
+                full_text += f"says{ly_mood_name},** \"{text}\""
+            if language_id != "1":
+                match language_id:
+                    case "2": 
+                        full_text += " **in Rodese.**"
+                    case "3": 
+                        full_text += " **in Doshan.**"
+                    case "4": 
+                        full_text += " **in Mon Calamari.**"
+                    case "5": 
+                        full_text += " **in Shyriiwook.**"
+                    case "6": 
+                        full_text += " **in Bothese.**"
+                    case "7": 
+                        full_text += " **in Ryl.**"
+                    case "8": 
+                        full_text += " **in Zabraki.**"
+                    case "9": 
+                        full_text += " **in Lekku.**"
+                    case "10": 
+                        full_text += " **in Ithorian.**"
+                    case "11": 
+                        full_text += " **in Sullustan.**"
+                    case _: 
+                        full_text += ""
+            asyncio.ensure_future(self._send_to_discord(self.chat_channel, full_text))
+        elif self.chat_channel == "playercount":
+            msg_arr = re.split('\|', message)
+            player_count = msg_arr[0]
+            dm_count = msg_arr[1]
+            await self.change_presence(activity = discord.Activity(type = discord.ActivityType.watching, name = f"Players: {player_count}, DMs: {dm_count}"))
+        else:
+            return
 
     def _relay_tell(self, player, message):
         """Called by SWG client when a tell is received."""
