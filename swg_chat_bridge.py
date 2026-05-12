@@ -810,14 +810,14 @@ class ChatBridge(discord.Client):
                 elif command != "":
                     full_text = f"**{player} {command}s"
                     if mood_name != "":
-                        ly_mood_name = get_mood(mood_name)
+                        ly_mood_name = self.get_mood(mood_name)
                         full_text += f" {ly_mood_name},** \"{text}\""
                     else:
                         full_text += f",** \"{text}\""
                 else:
                     full_text = f"**{player} says"
                     if mood_name != "":
-                        ly_mood_name = get_mood(mood_name)
+                        ly_mood_name = self.get_mood(mood_name)
                         full_text += f" {ly_mood_name},** \"{text}\""
                     else:
                         full_text += f",** \"{text}\""
