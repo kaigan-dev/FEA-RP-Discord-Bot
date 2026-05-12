@@ -795,7 +795,7 @@ class ChatBridge(discord.Client):
         """Called by SWG client when game chat is received."""
         if self.chat_channel:
             asyncio.ensure_future(
-                msg_arr = [substring.strip() for substring in message.split('|')]
+                msg_arr = re.split("|", message, 1)
                 command = msg_arr[0]
                 message = msg_arr[1]
                 if command = "DM"
