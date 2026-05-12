@@ -796,19 +796,47 @@ class ChatBridge(discord.Client):
         if self.chat_channel:
                 msg_arr = re.split('\|', message)
                 command = msg_arr[0]
-                new_message = msg_arr[1]
-                if ("((" and "))" in new_message):
+                text = msg_arr[1]
+                mood_name = msg_arr[2]
+                language_id = msg_arr[3]
+                if ("((" and "))" in text):
                     return
-                if ("(" and ")" in new_message):
+                if ("(" and ")" in text):
                     return
                 if command == "DM":
-                    asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"***{player}: {new_message}***"))
+                    asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player}:** ***{text}***"))
                 elif command == "emote":
-                    asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player} {new_message}**"))
+                    asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player} {text}**"))
                 elif command != "":
-                    asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player} {command}s,** \"{new_message}\""))
+                    full_text = f"**{player} {command}s"
+                    if mood_name != "":
+                        ly_mood_name = get_mood(mood_name)
+                        full_text += f" {ly_mood_name},** \"{text}\""
+                    else:
+                        full_text += f",** \"{text}\""
                 else:
-                    asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player} says,** \"{new_message}\""))
+                    full_text = f"**{player} says"
+                    if mood_name != "":
+                        ly_mood_name = get_mood(mood_name)
+                        full_text += f" {ly_mood_name},** \"{text}\""
+                    else:
+                        full_text += f",** \"{text}\""
+                if language_id != 1:
+                    match language_id:
+                        case 2: full_text += " **in Rodian.**"
+                        case 3: full_text += " **in Doshan.**"
+                        case 4: full_text += " **in Mon Calamari.**"
+                        case 5: full_text += " **in Shyriiwook.**"
+                        case 6: full_text += " **in Bothese.**"
+                        case 7: full_text += " **in Ryl.**"
+                        case 8: full_text += " **in Zabraki.**"
+                        case 9: full_text += " **in Lekku.**"
+                        case 10: full_text += " **in Ithorian.**"
+                        case 11: full_text += " **in Sullustan.**"
+                        case _: return ""
+                
+                asyncio.ensure_future(self._send_to_discord(self.chat_channel, full_text))
+
 
     def _relay_tell(self, player, message):
         """Called by SWG client when a tell is received."""
@@ -833,6 +861,41 @@ class ChatBridge(discord.Client):
                     f"{self.notification_tag}The server {server_name} is {status}"))
         self.log.info(f"Server {'UP' if is_up else 'DOWN'}")
 
+    def get_mood(self, mood_name):
+        match mood_name:
+            case "angry": return "angrily"
+            case "bubbly": return "bubbily"
+            case "bloodthirsty": return "bloodthirstily"
+            case "crotchety": return "crotchetily"
+            case "cocky": return "cockily"
+            case "courtly": return "courtily"
+            case "dainty": return "daintily"
+            case "default": return ""
+            case "dreamy": return "dreamily"
+            case "drunk": return "drunkenly"
+            case "emphatic": return "emphatically"
+            case "evil": return "evily"
+            case "friendly": return "friendlily"
+            case "forgive": return "forgivingly"
+            case "gloomy": return "gloomily"
+            case "grumpy": return "grumpily"
+            case "goofy": return "goofily"
+            case "guilty": return "guiltily"
+            case "happy": return "happily"
+            case "haughty": return "haughtily"
+            case "hungry": return "hungrily"
+            case "lazy": return "lazily"
+            case "lofty": return "loftily"
+            case "shifty": return "shiftily"
+            case "silly": return "sillily"
+            case "sleepy": return "sleepily"
+            case "surly": return "surlily"
+            case "snobby": return "snobbily"
+            case "sorry": return "sorrily"
+            case "thirsty": return "thirstily"
+            case "wary": return "warily"
+            case "whiny": return "whinily"
+            case _: return mood_name+"ly"
 
 # =============================================================================
 # Bot runner — folder scan, restart loop per bot
