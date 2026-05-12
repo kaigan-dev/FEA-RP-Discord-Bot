@@ -808,7 +808,7 @@ class ChatBridge(discord.Client):
                 elif command == "emote":
                     asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player} {text}**"))
                 elif command != "":
-                    full_text = f"**{player} "
+                    full_text = f"**{player} " 
                     self.log.info(f"Mood name: {mood_name}")
                     if mood_name != "" or mood_name != " " or mood_name != "  " or mood_name != "none":
                         ly_mood_name = self.get_mood(mood_name)
@@ -819,9 +819,11 @@ class ChatBridge(discord.Client):
                     full_text = f"**{player} "
                     self.log.info(f"Mood name: {mood_name}")
                     if mood_name != "" or mood_name != " " or mood_name != "  " or mood_name != "none":
+                        self.log.info("Triggered mood not equal to blank.")
                         ly_mood_name = self.get_mood(mood_name)
                         full_text += f"says {ly_mood_name},** \"{text}\""
                     else:
+                        self.log.info("Triggered mood equal to blank.")
                         full_text += f"says,** \"{text}\""
                 if language_id != 1:
                     match language_id:
