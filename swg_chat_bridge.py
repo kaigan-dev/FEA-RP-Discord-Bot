@@ -817,6 +817,7 @@ class ChatBridge(discord.Client):
                         full_text += f"{command}s,** \"{text}\""
                 else:
                     full_text = f"**{player} "
+                    self.log.info(f"Mood name: {mood_name}")
                     if mood_name != "" or mood_name != " " or mood_name != "  " or mood_name != "none":
                         ly_mood_name = self.get_mood(mood_name)
                         full_text += f"says {ly_mood_name},** \"{text}\""
