@@ -842,7 +842,7 @@ class ChatBridge(discord.Client):
             msg_arr = re.split('\|', message)
             player_count = msg_arr[0]
             dm_count = msg_arr[1]
-            await self.change_presence(activity = discord.Activity(type = discord.ActivityType.watching, name = f"Players: {player_count}, DMs: {dm_count}"))
+            asyncio.ensure_future(self.change_presence(activity = discord.Activity(type = discord.ActivityType.watching, name = f"Players: {player_count}, DMs: {dm_count}")))
         else:
             return
 
