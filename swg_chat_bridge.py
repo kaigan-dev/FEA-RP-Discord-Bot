@@ -799,7 +799,6 @@ class ChatBridge(discord.Client):
                 text = msg_arr[1]
                 mood_name = msg_arr[2]
                 language_id = msg_arr[3]
-                self.log.info(f"Language ID: {language_id}")
                 if ("((" and "))" in text):
                     return
                 if ("(" and ")" in text):
@@ -817,7 +816,6 @@ class ChatBridge(discord.Client):
                     ly_mood_name = self.get_mood(mood_name)
                     full_text += f"says{ly_mood_name},** \"{text}\""
                 if language_id != "1":
-                    self.log.info("Language ID check != 1 reached.")
                     match language_id:
                         case "2": 
                             full_text += " **in Rodese.**"
@@ -841,7 +839,6 @@ class ChatBridge(discord.Client):
                             full_text += " **in Sullustan.**"
                         case _: 
                             full_text += ""
-                self.log.info(f"Full text is: {full_text}")
                 asyncio.ensure_future(self._send_to_discord(self.chat_channel, full_text))
 
     def _relay_tell(self, player, message):
