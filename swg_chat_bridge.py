@@ -809,7 +809,7 @@ class ChatBridge(discord.Client):
                     asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player} {text}**"))
                 elif command != "":
                     full_text = f"**{player} {command}s"
-                    if mood_name != "":
+                    if mood_name != "" or mood_name != " " or mood_name != "  ":
                         ly_mood_name = self.get_mood(mood_name)
                         full_text += f" {ly_mood_name},** \"{text}\""
                     else:
@@ -873,6 +873,12 @@ class ChatBridge(discord.Client):
 
     def get_mood(self, mood_name):
         match mood_name:
+            case "":
+                return ""
+            case " ":
+                return ""
+            case "  ":
+                return ""
             case "angry":
                 return "angrily"
             case "bubbly":
@@ -915,6 +921,8 @@ class ChatBridge(discord.Client):
                 return "hungrily"
             case "lazy":
                 return "lazily"
+            case "none":
+                return ""
             case "lofty":
                 return "loftily"
             case "shifty":
