@@ -841,6 +841,7 @@ class ChatBridge(discord.Client):
                             full_text += " **in Sullustan.**"
                         case _: 
                             full_text += ""
+                self.log.info(f"Full text is: {full_text}")
                 asyncio.ensure_future(self._send_to_discord(self.chat_channel, full_text))
 
     def _relay_tell(self, player, message):
