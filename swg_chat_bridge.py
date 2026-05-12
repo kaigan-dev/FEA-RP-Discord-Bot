@@ -794,7 +794,7 @@ class ChatBridge(discord.Client):
     def _relay_chat(self, player, message):
         """Called by SWG client when game chat is received."""
         if self.chat_channel:
-                msg_arr = re.split('\|', message)
+                msg_arr = re.split("\|", message)
                 command = msg_arr[0]
                 text = msg_arr[1]
                 mood_name = msg_arr[2]
@@ -816,24 +816,35 @@ class ChatBridge(discord.Client):
                         full_text += f",** \"{text}\""
                 else:
                     full_text = f"**{player} says"
-                    if mood_name != "":
+                    if mood_name != "" or mood_name != "none":
                         ly_mood_name = self.get_mood(mood_name)
                         full_text += f" {ly_mood_name},** \"{text}\""
                     else:
                         full_text += f",** \"{text}\""
                 if language_id != 1:
                     match language_id:
-                        case 2: full_text += " **in Rodian.**"
-                        case 3: full_text += " **in Doshan.**"
-                        case 4: full_text += " **in Mon Calamari.**"
-                        case 5: full_text += " **in Shyriiwook.**"
-                        case 6: full_text += " **in Bothese.**"
-                        case 7: full_text += " **in Ryl.**"
-                        case 8: full_text += " **in Zabraki.**"
-                        case 9: full_text += " **in Lekku.**"
-                        case 10: full_text += " **in Ithorian.**"
-                        case 11: full_text += " **in Sullustan.**"
-                        case _: return ""
+                        case 2: 
+                            full_text += " **in Rodian.**"
+                        case 3: 
+                            full_text += " **in Doshan.**"
+                        case 4: 
+                            full_text += " **in Mon Calamari.**"
+                        case 5: 
+                            full_text += " **in Shyriiwook.**"
+                        case 6: 
+                            full_text += " **in Bothese.**"
+                        case 7: 
+                            full_text += " **in Ryl.**"
+                        case 8: 
+                            full_text += " **in Zabraki.**"
+                        case 9: 
+                            full_text += " **in Lekku.**"
+                        case 10: 
+                            full_text += " **in Ithorian.**"
+                        case 11: 
+                            full_text += " **in Sullustan.**"
+                        case _: 
+                            full_text += ""
                 
                 asyncio.ensure_future(self._send_to_discord(self.chat_channel, full_text))
 
@@ -863,38 +874,68 @@ class ChatBridge(discord.Client):
 
     def get_mood(self, mood_name):
         match mood_name:
-            case "angry": return "angrily"
-            case "bubbly": return "bubbily"
-            case "bloodthirsty": return "bloodthirstily"
-            case "crotchety": return "crotchetily"
-            case "cocky": return "cockily"
-            case "courtly": return "courtily"
-            case "dainty": return "daintily"
-            case "default": return ""
-            case "dreamy": return "dreamily"
-            case "drunk": return "drunkenly"
-            case "emphatic": return "emphatically"
-            case "evil": return "evily"
-            case "friendly": return "friendlily"
-            case "forgive": return "forgivingly"
-            case "gloomy": return "gloomily"
-            case "grumpy": return "grumpily"
-            case "goofy": return "goofily"
-            case "guilty": return "guiltily"
-            case "happy": return "happily"
-            case "haughty": return "haughtily"
-            case "hungry": return "hungrily"
-            case "lazy": return "lazily"
-            case "lofty": return "loftily"
-            case "shifty": return "shiftily"
-            case "silly": return "sillily"
-            case "sleepy": return "sleepily"
-            case "surly": return "surlily"
-            case "snobby": return "snobbily"
-            case "sorry": return "sorrily"
-            case "thirsty": return "thirstily"
-            case "wary": return "warily"
-            case "whiny": return "whinily"
+            case "angry":
+                return "angrily"
+            case "bubbly":
+                return "bubbily"
+            case "bloodthirsty":
+                return "bloodthirstily"
+            case "crotchety":
+                return "crotchetily"
+            case "cocky":
+                return "cockily"
+            case "courtly":
+                return "courtily"
+            case "dainty":
+                return "daintily"
+            case "dreamy":
+                return "dreamily"
+            case "drunk":
+                return "drunkenly"
+            case "emphatic":
+                return "emphatically"
+            case "evil":
+                return "evily"
+            case "friendly":
+                return "friendlily"
+            case "forgive":
+                return "forgivingly"
+            case "gloomy":
+                return "gloomily"
+            case "grumpy":
+                return "grumpily"
+            case "goofy":
+                return "goofily"
+            case "guilty":
+                return "guiltily"
+            case "happy":
+                return "happily"
+            case "haughty":
+                return "haughtily"
+            case "hungry":
+                return "hungrily"
+            case "lazy":
+                return "lazily"
+            case "lofty":
+                return "loftily"
+            case "shifty":
+                return "shiftily"
+            case "silly":
+                return "sillily"
+            case "sleepy":
+                return "sleepily"
+            case "surly":
+                return "surlily"
+            case "snobby":
+                return "snobbily"
+            case "sorry":
+                return "sorrily"
+            case "thirsty":
+                return "thirstily"
+            case "wary":
+                return "warily"
+            case "whiny":
+                return "whinily"
             case _: return mood_name+"ly"
 
 # =============================================================================
