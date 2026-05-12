@@ -795,7 +795,7 @@ class ChatBridge(discord.Client):
         """Called by SWG client when game chat is received."""
         if self.chat_channel:
                 self.log.info(f"Printing original message: {message}")
-                msg_arr = re.split("|", message)
+                msg_arr = re.split('\|', message)
                 command = msg_arr[0]
                 text = msg_arr[1]
                 mood_name = msg_arr[2]
