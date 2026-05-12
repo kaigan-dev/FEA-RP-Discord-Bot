@@ -791,7 +791,7 @@ class ChatBridge(discord.Client):
 
     def _relay_chat(self, player, message):
         """Called by SWG client when game chat is received."""
-        if self.chat_channel == "global":
+        if self.chat_channel:
             msg_arr = re.split('\|', message)
             command = msg_arr[0]
             text = msg_arr[1]
@@ -801,6 +801,8 @@ class ChatBridge(discord.Client):
                 return
             if ("(" and ")" in text):
                 return
+            if command == "PLAYERCOUNT":
+                asyncio.ensure_future(self.change_presence(activity = discord.Activity(type = discord.ActivityType.watching, name = f"Players: {msg_arr[1]}, DMs: {msg_arr[2]}")))
             if command == "DM":
                 asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player}:** ***{text}***"))
             elif command == "emote":
@@ -837,14 +839,6 @@ class ChatBridge(discord.Client):
                         full_text += " **in Sullustan.**"
                     case _: 
                         full_text += ""
-            asyncio.ensure_future(self._send_to_discord(self.chat_channel, full_text))
-        elif self.chat_channel == "playercount":
-            msg_arr = re.split('\|', message)
-            player_count = msg_arr[0]
-            dm_count = msg_arr[1]
-            asyncio.ensure_future(self.change_presence(activity = discord.Activity(type = discord.ActivityType.watching, name = f"Players: {player_count}, DMs: {dm_count}")))
-        else:
-            return
 
     def _relay_tell(self, player, message):
         """Called by SWG client when a tell is received."""
