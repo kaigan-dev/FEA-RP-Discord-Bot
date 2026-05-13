@@ -794,6 +794,7 @@ class ChatBridge(discord.Client):
     def _relay_chat(self, player, message):
         """Called by SWG client when game chat is received."""
         if self.chat_channel:
+            self.log.info(message)
             msg_arr = re.split('\|', message)
             command = msg_arr[0]
             text = msg_arr[1]
