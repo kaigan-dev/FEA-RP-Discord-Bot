@@ -816,7 +816,7 @@ class ChatBridge(discord.Client):
                 ly_mood_name = self.get_mood(mood_name)
                 full_text = f"**{player} "
                 if ly_mood_name != "":
-                    full_text += f"says{ly_mood_name},** \"{text}\""
+                    full_text += f"says {ly_mood_name},** \"{text}\""
                 else:
                     full_text += f"says,** \"{text}\""
             if language_id != "1":
@@ -874,70 +874,70 @@ class ChatBridge(discord.Client):
             case " ":
                 return ""
             case "angry":
-                return " angrily"
+                return "angrily"
             case "bubbly":
-                return " bubbily"
+                return "bubbily"
             case "bloodthirsty":
-                return " bloodthirstily"
+                return "bloodthirstily"
             case "crotchety":
-                return " crotchetily"
+                return "crotchetily"
             case "cocky":
-                return " cockily"
+                return "cockily"
             case "courtly":
-                return " courtily"
+                return "courtily"
             case "dainty":
-                return " daintily"
+                return "daintily"
             case "dreamy":
-                return " dreamily"
+                return "dreamily"
             case "drunk":
-                return " drunkenly"
+                return "drunkenly"
             case "emphatic":
-                return " emphatically"
+                return "emphatically"
             case "evil":
-                return " evily"
+                return "evily"
             case "friendly":
-                return " friendlily"
+                return "friendlily"
             case "forgive":
-                return " forgivingly"
+                return "forgivingly"
             case "gloomy":
-                return " gloomily"
+                return "gloomily"
             case "grumpy":
-                return " grumpily"
+                return "grumpily"
             case "goofy":
-                return " goofily"
+                return "goofily"
             case "guilty":
-                return " guiltily"
+                return "guiltily"
             case "happy":
-                return " happily"
+                return "happily"
             case "haughty":
-                return " haughtily"
+                return "haughtily"
             case "hungry":
-                return " hungrily"
+                return "hungrily"
             case "lazy":
-                return " lazily"
+                return "lazily"
             case "none":
                 return ""
             case "lofty":
-                return " loftily"
+                return "loftily"
             case "shifty":
-                return " shiftily"
+                return "shiftily"
             case "silly":
-                return " sillily"
+                return "sillily"
             case "sleepy":
-                return " sleepily"
+                return "sleepily"
             case "surly":
-                return " surlily"
+                return "surlily"
             case "snobby":
-                return " snobbily"
+                return "snobbily"
             case "sorry":
-                return " sorrily"
+                return "sorrily"
             case "thirsty":
-                return " thirstily"
+                return "thirstily"
             case "wary":
-                return " warily"
+                return "warily"
             case "whiny":
-                return " whinily"
-            case _: return " " + mood_name+"ly"
+                return "whinily"
+            case _: return mood_name+"ly"
 
 # =============================================================================
 # Bot runner — folder scan, restart loop per bot
