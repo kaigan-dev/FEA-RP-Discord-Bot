@@ -942,7 +942,7 @@ class ChatBridge(discord.Client):
                 return " warily"
             case "whiny":
                 return " whinily"
-            case _: return mood_name+"ly"
+            case _: return " " + mood_name+"ly"
 
 # =============================================================================
 # Bot runner — folder scan, restart loop per bot
