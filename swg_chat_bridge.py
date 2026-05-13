@@ -845,7 +845,6 @@ class ChatBridge(discord.Client):
                         full_text += ""
             asyncio.ensure_future(self._send_to_discord(self.chat_channel, full_text))
 
-
     def _relay_tell(self, player, message):
         """Called by SWG client when a tell is received."""
         if player.lower() != self.swg.character.lower():
