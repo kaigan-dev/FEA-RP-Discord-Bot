@@ -804,7 +804,8 @@ class ChatBridge(discord.Client):
             if command == "PLAYERCOUNT":
                 self.log.info("Triggered playercount.")
                 asyncio.ensure_future(self.change_presence(activity = discord.Activity(type = discord.ActivityType.watching, name = f"Players: {player_count}, DMs: {dm_count}")))
-            elif command == "DM":
+                return
+            if command == "DM":
                 self.log.info("Triggered DM.")
                 asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player}:** ***{text}***"))
             elif command == "emote":
@@ -820,7 +821,7 @@ class ChatBridge(discord.Client):
                 full_text = f"**{player} "
                 ly_mood_name = self.get_mood(mood_name)
                 full_text += f"says{ly_mood_name},** \"{text}\""
-            if language_id != "1" and language_id != "-":
+            if language_id != "1"
                 self.log.info("Triggered language.")
                 match language_id:
                     case "2": 
