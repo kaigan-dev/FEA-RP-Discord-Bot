@@ -801,8 +801,6 @@ class ChatBridge(discord.Client):
             dm_count = msg_arr[2]
             language_id = msg_arr[3]
             self.log.info(f"{command}, {text}, {mood_name}, {language_id}")
-            if ("((" or "))" or "(" or ")" in text):
-                return
             if command == "PLAYERCOUNT":
                 self.log.info("Triggered playercount.")
                 asyncio.ensure_future(self.change_presence(activity = discord.Activity(type = discord.ActivityType.watching, name = f"Players: {player_count}, DMs: {dm_count}")))
