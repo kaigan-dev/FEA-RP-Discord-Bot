@@ -800,26 +800,29 @@ class ChatBridge(discord.Client):
             mood_name = msg_arr[2]
             dm_count = msg_arr[2]
             language_id = msg_arr[3]
-            if ("((" or "))" in text):
-                return
-            if ("(" or ")" in text):
+            if ("((" or "))" or "(" or ")" in text):
                 return
             if command == "PLAYERCOUNT":
+                self.log.info("Triggered playercount.")
                 asyncio.ensure_future(self.change_presence(activity = discord.Activity(type = discord.ActivityType.watching, name = f"Players: {player_count}, DMs: {dm_count}")))
-                return
-            if command == "DM":
+            elif command == "DM":
+                self.log.info("Triggered DM.")
                 asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player}:** ***{text}***"))
             elif command == "emote":
+                self.log.info("Triggered emote.")
                 asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player} {text}**"))
-            elif command != "":
+            elif command != "" and command != "PLAYERCOUNT" and command != "DM" and command != "emote":
+                self.log.info("Triggered non-blank command.")
                 full_text = f"**{player} "
                 ly_mood_name = self.get_mood(mood_name)
                 full_text += f"{command}s {ly_mood_name},** \"{text}\""
             else:
+                self.log.info("Triggered blank command.")
                 full_text = f"**{player} "
                 ly_mood_name = self.get_mood(mood_name)
                 full_text += f"says{ly_mood_name},** \"{text}\""
             if language_id != "1":
+                self.log.info("Triggered language.")
                 match language_id:
                     case "2": 
                         full_text += " **in Rodese.**"
@@ -843,6 +846,7 @@ class ChatBridge(discord.Client):
                         full_text += " **in Sullustan.**"
                     case _: 
                         full_text += ""
+            self.log.info("Triggered send to Discord.")
             asyncio.ensure_future(self._send_to_discord(self.chat_channel, full_text))
 
     def _relay_tell(self, player, message):
