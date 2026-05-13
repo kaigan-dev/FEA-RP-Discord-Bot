@@ -681,7 +681,9 @@ class ChatBridge(discord.Client):
         elif self.notification_user_id:
             self.notification_tag = f"<@{self.notification_user_id}> "
 
-        await self.change_presence(activity = discord.Activity(type = discord.ActivityType.watching, name = "Waiting for player count."))
+        presence_name = self.discord_cfg.get('PresenceName', 'in-game')
+        await self.change_presence(
+            activity=discord.Activity(type=discord.ActivityType.watching, name=presence_name))
 
         await self.swg.start()
         self.log.info("SWG client started")
@@ -792,37 +794,24 @@ class ChatBridge(discord.Client):
     def _relay_chat(self, player, message):
         """Called by SWG client when game chat is received."""
         if self.chat_channel:
-            self.log.info(message)
             msg_arr = re.split('\|', message)
             command = msg_arr[0]
             text = msg_arr[1]
-            player_count = msg_arr[1]
             mood_name = msg_arr[2]
-            dm_count = msg_arr[2]
             language_id = msg_arr[3]
-            self.log.info(f"{command}, {text}, {mood_name}, {language_id}")
-            if command == "PLAYERCOUNT":
-                self.log.info("Triggered playercount.")
-                asyncio.ensure_future(self.change_presence(activity = discord.Activity(type = discord.ActivityType.watching, name = f"Players: {player_count}, DMs: {dm_count}")))
-                return
             if command == "DM":
-                self.log.info("Triggered DM.")
                 asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player}:** ***{text}***"))
             elif command == "emote":
-                self.log.info("Triggered emote.")
                 asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player} {text}**"))
-            elif command != "" and command != "PLAYERCOUNT" and command != "DM" and command != "emote":
-                self.log.info("Triggered non-blank command.")
+            elif command != "":
                 full_text = f"**{player} "
                 ly_mood_name = self.get_mood(mood_name)
                 full_text += f"{command}s {ly_mood_name},** \"{text}\""
             else:
-                self.log.info("Triggered blank command.")
                 full_text = f"**{player} "
                 ly_mood_name = self.get_mood(mood_name)
                 full_text += f"says{ly_mood_name},** \"{text}\""
             if language_id != "1":
-                self.log.info("Triggered language.")
                 match language_id:
                     case "2": 
                         full_text += " **in Rodese.**"
@@ -846,13 +835,11 @@ class ChatBridge(discord.Client):
                         full_text += " **in Sullustan.**"
                     case _: 
                         full_text += ""
-            self.log.info("Triggered send to Discord.")
             asyncio.ensure_future(self._send_to_discord(self.chat_channel, full_text))
 
     def _relay_tell(self, player, message):
         """Called by SWG client when a tell is received."""
         if player.lower() != self.swg.character.lower():
-            self.log.info(f"Tell from {player}: {message}")
             self.swg.send_tell(player, "Sorry, I don't talk to strangers... XOXO")
 
     def _relay_server_status(self, is_up):
