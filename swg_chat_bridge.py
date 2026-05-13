@@ -821,7 +821,7 @@ class ChatBridge(discord.Client):
                 full_text = f"**{player} "
                 ly_mood_name = self.get_mood(mood_name)
                 full_text += f"says{ly_mood_name},** \"{text}\""
-            if language_id != "1"
+            if language_id != "1":
                 self.log.info("Triggered language.")
                 match language_id:
                     case "2": 
