@@ -800,6 +800,7 @@ class ChatBridge(discord.Client):
             text = msg_arr[1]
             mood_name = msg_arr[2]
             language_id = msg_arr[3]
+            self.log.info(f"{command}, {text}, {mood_name}, {language_id}")
             if command == "DM":
                 asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player}:** ***{text}***"))
             elif command == "emote":
