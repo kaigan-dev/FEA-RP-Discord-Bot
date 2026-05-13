@@ -800,6 +800,7 @@ class ChatBridge(discord.Client):
             mood_name = msg_arr[2]
             dm_count = msg_arr[2]
             language_id = msg_arr[3]
+            self.log.info(f"{command}, {text}, {mood_name}, {language_id}")
             if ("((" or "))" or "(" or ")" in text):
                 return
             if command == "PLAYERCOUNT":
