@@ -806,6 +806,7 @@ class ChatBridge(discord.Client):
                 language_id = msg_arr[2]
                 if command == "emote":
                     asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player} {text}**"))
+                    return
                 elif command != "":
                     ly_mood_name = self.get_mood(mood_name)
                     full_text = f"**{player} "
