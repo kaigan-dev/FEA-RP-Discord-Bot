@@ -794,54 +794,57 @@ class ChatBridge(discord.Client):
     def _relay_chat(self, player, message):
         """Called by SWG client when game chat is received."""
         if self.chat_channel:
-            msg_arr = re.split('\|', message)
+            msg_arr = re.split('\|', message, 1)
             command = msg_arr[0]
-            text = msg_arr[1]
-            mood_name = msg_arr[2]
-            language_id = msg_arr[3]
+            remainder = msg_arr[1]
             if command == "DM":
-                asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player}:** ***{text}***"))
-            elif command == "emote":
-                asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player} {text}**"))
-            elif command != "":
-                ly_mood_name = self.get_mood(mood_name)
-                full_text = f"**{player} "
-                if ly_mood_name != "":
-                    full_text += f"{command}s {ly_mood_name},** \"{text}\""
-                else:
-                    full_text += f"{command}s,** \"{text}\""
+                asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player}:** ***{remainder}***"))
             else:
-                ly_mood_name = self.get_mood(mood_name)
-                full_text = f"**{player} "
-                if ly_mood_name != "":
-                    full_text += f"says {ly_mood_name},** \"{text}\""
+                msg_arr = re.split('\|', remainder)
+                text = msg_arr[0]
+                mood_name = msg_arr[1]
+                language_id = msg_arr[2]
+                if command == "emote":
+                    asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player} {text}**"))
+                elif command != "":
+                    ly_mood_name = self.get_mood(mood_name)
+                    full_text = f"**{player} "
+                    if ly_mood_name != "":
+                        full_text += f"{command}s {ly_mood_name},** \"{text}\""
+                    else:
+                        full_text += f"{command}s,** \"{text}\""
                 else:
-                    full_text += f"says,** \"{text}\""
-            if language_id != "1":
-                match language_id:
-                    case "2": 
-                        full_text += " **in Rodese.**"
-                    case "3": 
-                        full_text += " **in Doshan.**"
-                    case "4": 
-                        full_text += " **in Mon Calamari.**"
-                    case "5": 
-                        full_text += " **in Shyriiwook.**"
-                    case "6": 
-                        full_text += " **in Bothese.**"
-                    case "7": 
-                        full_text += " **in Ryl.**"
-                    case "8": 
-                        full_text += " **in Zabraki.**"
-                    case "9": 
-                        full_text += " **in Lekku.**"
-                    case "10": 
-                        full_text += " **in Ithorian.**"
-                    case "11": 
-                        full_text += " **in Sullustan.**"
-                    case _: 
-                        full_text += ""
-            asyncio.ensure_future(self._send_to_discord(self.chat_channel, full_text))
+                    ly_mood_name = self.get_mood(mood_name)
+                    full_text = f"**{player} "
+                    if ly_mood_name != "":
+                        full_text += f"says {ly_mood_name},** \"{text}\""
+                    else:
+                        full_text += f"says,** \"{text}\""
+                if language_id != "1":
+                    match language_id:
+                        case "2": 
+                            full_text += " **in Rodese.**"
+                        case "3": 
+                            full_text += " **in Doshan.**"
+                        case "4": 
+                            full_text += " **in Mon Calamari.**"
+                        case "5": 
+                            full_text += " **in Shyriiwook.**"
+                        case "6": 
+                            full_text += " **in Bothese.**"
+                        case "7": 
+                            full_text += " **in Ryl.**"
+                        case "8": 
+                            full_text += " **in Zabraki.**"
+                        case "9": 
+                            full_text += " **in Lekku.**"
+                        case "10": 
+                            full_text += " **in Ithorian.**"
+                        case "11": 
+                            full_text += " **in Sullustan.**"
+                        case _: 
+                            full_text += ""
+                asyncio.ensure_future(self._send_to_discord(self.chat_channel, full_text))
 
     def _relay_tell(self, player, message):
         """Called by SWG client when a tell is received."""
