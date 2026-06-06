@@ -797,6 +797,10 @@ class ChatBridge(discord.Client):
             msg_arr = re.split('\|', message, 1)
             command = msg_arr[0]
             remainder = msg_arr[1]
+
+            if "(a " in player:
+                re.sub(r"(a ", "", player)
+
             if command == "DM":
                 asyncio.ensure_future(self._send_to_discord(self.chat_channel, f"**{player}:** ***{remainder}***"))
             else:
