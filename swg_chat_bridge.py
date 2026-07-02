@@ -849,6 +849,26 @@ class ChatBridge(discord.Client):
                             full_text += " **in Ithorian.**"
                         case "11": 
                             full_text += " **in Sullustan.**"
+                        case "12":
+                            full_text += " **in Mistryl.**"
+                        case "13":
+                            full_text += " **in Huttese.**"
+                        case "14":
+                            full_text += " **in Esselean.**"
+                        case "15":
+                            full_text += " **in Miralukese.**"
+                        case "16":
+                            full_text += " **in Sephi.**"
+                        case "17":
+                            full_text += " **in Ewok.**"
+                        case "18":
+                            full_text += " **in Binary.**"
+                        case "19":
+                            full_text += " **in Astromech.**"
+                        case "20":
+                            full_text += " **in Jawa Trade.**"
+                        case "21":
+                            full_text += " **in Mando'a.**"
                         case _: 
                             full_text += ""
                 asyncio.ensure_future(self._send_to_discord(self.chat_channel, full_text))
